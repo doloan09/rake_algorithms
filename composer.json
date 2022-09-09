@@ -1,0 +1,54 @@
+{
+    "name": "doloan09/rake_algorithms",
+    "description": "Rake Algorithms",
+    "keywords": [
+        "doloan09",
+        "rake_algorithms"
+    ],
+    "homepage": "https://github.com/doloan09/rake_algorithms",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "dothiloan",
+            "email": "dothiloan150901@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Doloan09\\RakeAlgorithms\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Doloan09\\RakeAlgorithms\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Doloan09\\RakeAlgorithms\\RakeAlgorithmsServiceProvider"
+            ],
+            "aliases": {
+                "RakeAlgorithms": "Doloan09\\RakeAlgorithms\\RakeAlgorithmsFacade"
+            }
+        }
+    }
+}
