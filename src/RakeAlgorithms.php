@@ -4,20 +4,20 @@ namespace Doloan09\RakeAlgorithms;
 
 class RakeAlgorithms
 {
-    protected $stopWord = [];
+    protected $lang;
     protected $paragraph;
 
     public function __construct(string $paragraph, $lang = 'vi_VN'){
-        $this->setLang($lang);
+        $this->lang = $lang;
         $this->paragraph = $paragraph;
     }
     /// tra ve mang stopword
-    public function setLang($lang){
+    public function getStopWord($lang){
         if (!file_exists(__DIR__ . "/../asset/{$lang}.json")){
             throw new \ErrorException("Not found");
         }
-        $this->stopWord = json_decode(file_get_contents(__DIR__ . "/../asset/{$lang}.json", true));
-        return $this;
+        $stopWord = json_decode(file_get_contents(__DIR__ . "/../asset/{$lang}.json", true));
+        return $stopWord;
     }
 
     // tach van ban thanh cac cau (truyen vao doan text)
@@ -27,8 +27,9 @@ class RakeAlgorithms
 
     //  lay ra cac cum tu (truyen vao danh sach cac cau)
     public function getPhrase(array $sentences){
+        $stopWord = $this->getStopWord($this->lang);
         $phraseArr = [];
-        $regex     = '/\b' . implode('\b|\b', $this->stopWord) . '\b/iu';
+        $regex     = '/\b' . implode('\b|\b', $stopWord) . '\b/iu';
         foreach ($sentences as $sentence){
             if (trim($sentence)){
                 $phraseItem = preg_replace($regex, "|", trim(mb_strtolower($sentence)));
