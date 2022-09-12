@@ -13,7 +13,7 @@ You can install the package via composer:
 ```bash
 composer require doloan09/rake_algorithms
 ```
-You can install the package via link github:\
+## Install the package via link github:
 First, open up your PHP project's composer.json file. Then, add code:
 ```bash
  "require": {
