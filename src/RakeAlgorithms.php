@@ -4,20 +4,36 @@ namespace Doloan09\RakeAlgorithms;
 
 class RakeAlgorithms
 {
-    protected $lang;
-    protected $paragraph;
+    protected $paragraph = "";
+    protected $stopWord = [];
+    protected $numKeyword = null;
+    protected $minScore = 0;
 
-    public function __construct(string $paragraph, $lang = 'vi_VN'){
-        $this->lang = $lang;
-        $this->paragraph = $paragraph;
-    }
+    public function __construct(){}
+
     /// tra ve mang stopword
-    public function getStopWord($lang){
+    public function getStopWord($lang = 'vi_VN'){
         if (!file_exists(__DIR__ . "/../asset/{$lang}.json")){
             throw new \ErrorException("Not found");
         }
-        $stopWord = json_decode(file_get_contents(__DIR__ . "/../asset/{$lang}.json", true));
-        return $stopWord;
+        $this->stopWord = json_decode(file_get_contents(__DIR__ . "/../asset/{$lang}.json", true));
+        return $this;
+    }
+
+    // set paragraph
+    public function getParagraph(string $paragraph = ""){
+        $this->paragraph = $paragraph;
+        return $this;
+    }
+
+    public function setNumKeyWord($number){
+        $this->numKeyword = $number;
+        return $this;
+    }
+
+    public function setMinScore($score){
+        $this->minScore = $score;
+        return $this;
     }
 
     // tach van ban thanh cac cau (truyen vao doan text)
@@ -27,9 +43,8 @@ class RakeAlgorithms
 
     //  lay ra cac cum tu (truyen vao danh sach cac cau)
     public function getPhrase(array $sentences){
-        $stopWord = $this->getStopWord($this->lang);
         $phraseArr = [];
-        $regex     = '/\b' . implode('\b|\b', $stopWord) . '\b/iu';
+        $regex     = '/\b' . implode('\b|\b', $this->stopWord) . '\b/iu';
         foreach ($sentences as $sentence){
             if (trim($sentence)){
                 $phraseItem = preg_replace($regex, "|", trim(mb_strtolower($sentence)));
@@ -74,7 +89,7 @@ class RakeAlgorithms
         return $scores;
     }
 
-    public function getKeyword(int $numKeyword = null, $minScore = 0){
+    public function getKeyword(){
         $sentences = $this->split_sentences($this->paragraph); // tra ve 1 mang cac cau don
         $candidateKeyPhrases = $this->getPhrase($sentences); // tra ve mang cac cum tu
         $scores = $this->getScore($candidateKeyPhrases); // tra ve diem cua tung tu don le
@@ -94,12 +109,13 @@ class RakeAlgorithms
 
         arsort($cumulativeScore);
 
+        $minScore = $this->minScore;
         $result = array_filter($cumulativeScore, function ($value) use ($minScore) {
             return $value >= $minScore;
         });
 
-        if ($numKeyword) {
-            $result = array_slice($result, 0, $numKeyword);
+        if ($this->numKeyword) {
+            $result = array_slice($result, 0, $this->numKeyword);
         }
 
         return $result;
