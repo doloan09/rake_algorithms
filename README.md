@@ -13,6 +13,27 @@ You can install the package via composer:
 ```bash
 composer require doloan09/rake_algorithms
 ```
+You can install the package via link github:\
+First, open up your PHP project's composer.json file. Then, add code:
+```bash
+ "require": {
+        ...
+        "doloan09/rake_algorithms": "dev-master",
+        ...
+        }
+```
+```bash
+"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/doloan09/rake_algorithms.git"
+        }
+    ],
+```
+Finally, all you have to do is update your Composer packages from the project root:
+```php
+composer update
+```
 
 ## Usage
 
