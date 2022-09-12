@@ -22,7 +22,8 @@ class RakeAlgorithms
 
     // set paragraph
     public function getParagraph(string $paragraph = ""){
-        $this->paragraph = $paragraph;
+        $contents = preg_replace("/[0-9]+[.]?[0-9]*/", "", $paragraph); /// xoa so
+        $this->paragraph = $contents;
         return $this;
     }
 
